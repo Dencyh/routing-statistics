@@ -2,7 +2,7 @@ const XLSX = require('xlsx')
 const fs = require('fs')
 
 // Get file names
-const folderPath = './Put_original_files_here'
+const folderPath = 'Files'
 const filesList = []
 
 fs.readdirSync(folderPath).forEach(file => {
@@ -31,19 +31,16 @@ let ExtendedRoutes = []
 let Metrics = []
 
 
-
+// This is in test branch
 for (let i = 0; i < filesList.length; i++) {
-    const singleFile = XLSX.readFile(`${folderPath}/${filesList[i]}`, { cellDates: true })
+    const singleFile = XLSX.readFile(`${folderPath}/${filesList[i]}`)
     // Getting Sheet's data from single file
     SimpleRoutes = singleFile.Sheets['Маршруты']
     ExtendedRoutes = singleFile.Sheets['Расширенные маршруты']
     Metrics = (singleFile.Sheets['Метрики']) /* XLSX.utils.sheet_to_json */
     SimpleRoutesJSON = XLSX.utils.sheet_to_json(SimpleRoutes)
 
-    if ((SimpleRoutes && ExtendedRoutes && Metrics)) {
-        console.log(filesList[i])
-        return
-    }
+
 
     // Creating AoA
     const oneDayData = []
@@ -82,7 +79,9 @@ for (let i = 0; i < filesList.length; i++) {
 
 
     // Travel distance culumn
-    const travelDistanceAvergae = (Metrics[cellSumRouteLength].v / couriersCount).toFixed(1)
+    const traverDistanceNumber = parseInt((Metrics[cellSumRouteLength].v).replace(/\s/g, ''), 10)
+
+    const travelDistanceAvergae = (traverDistanceNumber / couriersCount).toFixed(1)
 
 
     oneDayData.push(warehouseData, date, couriersCount, uniqueAddresses, ordersCount, uniqueLots, travelDistanceAvergae)
@@ -92,7 +91,7 @@ for (let i = 0; i < filesList.length; i++) {
 
 }
 resultArray.unshift(['Склад', 'Дата', 'Количество курьеров', 'Количество точек', 'Количество заказов', 'Количество лотов', 'Пробег среднее'])
-console.log(resultArray)
+
 
 const newWS_name = 'Results'
 const newWS = XLSX.utils.aoa_to_sheet(resultArray, { wpx: 200 })
