@@ -1,0 +1,17 @@
+{
+  "name": "dropoff_statistics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Alexander Moryan <a.dencyh@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "jsontoxml": "^1.0.1",
+    "xlsx": "^0.17.4"
+  }
+}
